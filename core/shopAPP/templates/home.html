@@ -27,6 +27,7 @@
             <h2>{{ product.name }}</h2>
             <p>Цена: {{ product.price }}</p>
             <p>{{ product.description }}</p>
+			<a href="/main/product/{{ product.pk }}/">Подробнее / Комментарии</a>
         </div>
     {% endfor %}
 

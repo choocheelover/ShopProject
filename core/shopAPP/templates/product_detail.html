@@ -1,0 +1,28 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<a href="/main/" class="button">Главное меню</a>
+
+<h1>{{ product.name }}</h1>
+<p>{{ product.description }}</p>
+
+<h2>Комментарии</h2>
+
+{% for comment in comments %}
+<p>{{ comment.author }}: {{ comment.text }} — <small>{{ comment.created_at|date:"d.m.Y H:i" }}</small></p>
+<p>{{ comment.author }}: {{ comment.text }}</p>
+<a href="/main/comment/like/{{ comment.pk }}/">❤️ {{ comment.likes.count }}</a>
+{% if request.user == comment.author %}
+    <a href="/main/comment/delete/{{ comment.pk }}/">Удалить</a>
+{% endif %}
+{% endfor %}
+
+{% if user.is_authenticated %}
+<form method="post">
+    {% csrf_token %}
+    <textarea name="text"></textarea>
+    <button type="submit">Отправить</button>
+</form>
+{% else %}
+<p>Войдите, чтобы оставить комментарий</p>
+{% endif %}
