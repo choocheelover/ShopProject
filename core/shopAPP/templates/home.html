@@ -6,6 +6,18 @@
 <title>Товары</title>
 </head>
 <main>
+<header>
+<h1>Магазин</h1>
+<div>
+        {% if user.is_authenticated %}
+<span>{{ user.username }}</span>
+<a href="/logout/" class="button">Выйти</a>
+        {% else %}
+<a href="/login/" class="button">Войти</a>
+<a href="/register/" class="button">Регистрация</a>
+        {% endif %}
+</div>
+</header>
   <h1>Список товаров</h1>
   <div class="products-grid">
     {% for product in page_obj %}

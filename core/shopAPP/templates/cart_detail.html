@@ -5,8 +5,19 @@
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <title>Корзина</title>
 <main>
-  <h1>Корзина</h1>
-
+<header>
+<h1>Корзиночка</h1>
+<div>
+        {% if user.is_authenticated %}
+<span>{{ user.username }}</span>
+<a href="/logout/" class="button">Выйти</a>
+        {% else %}
+<a href="/login/" class="button">Войти</a>
+<a href="/register/" class="button">Регистрация</a>
+        {% endif %}
+</div>
+</header>
+<br>
   {% for item in cart %}
   <div class="cart-item">
     <div class="cart-item-info">
