@@ -1,28 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
+<title>{{ product.name }}</title>
+</head>
+<body>
+<main>
+  <a href="/main/" class="back-link">← Главное меню</a>
 
-<a href="/main/" class="button">Главное меню</a>
+  <div class="product-header">
+    <h1>{{ product.name }}</h1>
+    <p class="desc">{{ product.description }}</p>
+  </div>
 
-<h1>{{ product.name }}</h1>
-<p>{{ product.description }}</p>
+  <div class="comments-block">
+    <h2>Комментарии</h2>
+    {% for comment in comments %}
+    <div class="comment">
+      <p class="comment-meta"><strong>{{ comment.author }}</strong> &nbsp;·&nbsp; {{ comment.created_at|date:"d.m.Y H:i" }}</p>
+      <p class="comment-text">{{ comment.text }}</p>
+      <div class="comment-actions">
+        <a href="/main/comment/like/{{ comment.pk }}/">❤️ {{ comment.likes.count }}</a>
+        {% if request.user == comment.author %}
+        <a href="/main/comment/delete/{{ comment.pk }}/" class="delete">Удалить</a>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
 
-<h2>Комментарии</h2>
-
-{% for comment in comments %}
-<p>{{ comment.author }}: {{ comment.text }} — <small>{{ comment.created_at|date:"d.m.Y H:i" }}</small></p>
-<p>{{ comment.author }}: {{ comment.text }}</p>
-<a href="/main/comment/like/{{ comment.pk }}/">❤️ {{ comment.likes.count }}</a>
-{% if request.user == comment.author %}
-    <a href="/main/comment/delete/{{ comment.pk }}/">Удалить</a>
-{% endif %}
-{% endfor %}
-
-{% if user.is_authenticated %}
-<form method="post">
-    {% csrf_token %}
-    <textarea name="text"></textarea>
-    <button type="submit">Отправить</button>
-</form>
-{% else %}
-<p>Войдите, чтобы оставить комментарий</p>
-{% endif %}
+    {% if user.is_authenticated %}
+    <form method="post" class="comment-form">
+      {% csrf_token %}
+      <textarea name="text" placeholder="Напишите комментарий..."></textarea>
+      <button type="submit">Отправить</button>
+    </form>
+    {% else %}
+    <p class="login-note">Войдите, чтобы оставить комментарий</p>
+    {% endif %}
+  </div>
+</main>
+</body>
+</html>

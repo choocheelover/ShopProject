@@ -5,54 +5,39 @@
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 <title>Товары</title>
 </head>
-<body>
-
-<header>
-	<h1>Магазин</h1>
-	<div>
-		{% if user.is_authenticated %}
-			<span>{{ user.username }}</span>
-			<a href="/logout/" class="button">Выйти</a>
-		{% else %}
-			<a href="/login/" class="button">Войти</a>
-			<a href="/register/" class="button">Регистрация</a>
-		{% endif %}
-	</div>
-</header>
-
-<h1>Список товаров</h1>
-
-    {#  {% for product in products %} #} 
-
+<main>
+  <h1>Список товаров</h1>
+  <div class="products-grid">
     {% for product in page_obj %}
+    <div class="product-card">
+      {% if product.image %}
+      <img src="{{ product.image.url }}" alt="{{ product.name }}">
+      {% endif %}
+      <div class="product-card-body">
+        <h3>{{ product.name }}</h3>
+        <p class="desc">{{ product.description|truncatewords:15 }}</p>
+        <p class="price">{{ product.price }} тг</p>
+        <div class="product-card-actions">
+          <a href="/main/product/{{ product.pk }}/">Подробнее / Комментарии</a>
+          <a href="{% url 'add_to_cart' product.id %}">Добавить в корзину</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
 
-<div>
-    {% if product.image %}
-    <img src="{{ product.image.url }}" alt="{{ product.name }}" width="200">
-    {% endif %}
-    <h3>{{ product.name }}</h3>
-    <p>{{ product.description|truncatewords:15 }}</p>
-    <p>Цена: {{ product.price }} тг</p>
-	<a href="/main/product/{{ product.pk }}/">Подробнее / Комментарии</a>
-    <a href="{% url 'add_to_cart' product.id %}">Добавить в корзину</a>
-</div>
-{% endfor %}
-
-<div>
+  <div class="pagination">
     {% if page_obj.has_previous %}
-        <a href="?page=1">Первая</a>
-        <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+    <a href="?page=1">Первая</a>
+    <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
     {% endif %}
-
     <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
-
     {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">Вперёд</a>
-        <a href="?page={{ page_obj.paginator.num_pages }}">Последняя</a>
+    <a href="?page={{ page_obj.next_page_number }}">Вперёд</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}">Последняя</a>
     {% endif %}
-</div>
+  </div>
 
-<p><a href="{% url 'cart_detail' %}">Перейти в корзину</a></p>
-
-</body>
+  <p class="cart-link"><a href="{% url 'cart_detail' %}">Перейти в корзину →</a></p>
+</main>
 </html>

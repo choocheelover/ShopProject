@@ -1,17 +1,31 @@
-<h1>Корзина</h1>
+<!DOCTYPE html>
+<html>
+<head>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<title>Корзина</title>
+<main>
+  <h1>Корзина</h1>
 
-{% for item in cart %}
-    <div>
-        <h3>{{ item.product.name }}</h3>
-        <p>Цена: {{ item.price }} тг</p>
-        <p>Количество: {{ item.quantity }}</p>
-        <p>Сумма: {{ item.total_price }} тг</p>
-        <a href="{% url 'remove_from_cart' item.product.id %}">Удалить</a>
+  {% for item in cart %}
+  <div class="cart-item">
+    <div class="cart-item-info">
+      <h3>{{ item.product.name }}</h3>
+      <p>Цена: {{ item.price }} тг &nbsp;·&nbsp; Количество: {{ item.quantity }}</p>
     </div>
-    <hr>
-{% empty %}
-    <p>Корзина пуста</p>
-{% endfor %}
+    <div style="display:flex; align-items:center; gap:16px;">
+      <span class="cart-item-total">{{ item.total_price }} тг</span>
+      <a href="{% url 'remove_from_cart' item.product.id %}" class="delete-btn">Удалить</a>
+    </div>
+  </div>
+  {% empty %}
+  <p class="cart-empty">Корзина пуста</p>
+  {% endfor %}
 
-<h3>Итого: {{ cart.get_total_price }} тг</h3>
-<p><a href="{% url 'product_list' %}">Вернуться к товарам</a></p>
+  <div class="cart-total">
+    <span>Итого:</span>
+    <span>{{ cart.get_total_price }} тг</span>
+  </div>
+
+  <a href="{% url 'product_list' %}" class="back-link">← Вернуться к товарам</a>
+</main>
