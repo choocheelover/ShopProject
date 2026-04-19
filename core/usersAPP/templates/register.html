@@ -1,0 +1,9 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<a href="/main/" class="button">Главное меню</a>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Зарегистрироваться</button>
+    <a href="/login/" class="button">Уже зарегестрированы?</a>
+</form>

@@ -1,0 +1,18 @@
+<h1>{{ product.name }}</h1>
+<p>{{ product.description }}</p>
+
+<h2>Комментарии</h2>
+
+{% for comment in comments %}
+<p>{{ comment.author }}: {{ comment.text }}</p>
+{% endfor %}
+
+{% if user.is_authenticated %}
+<form method="post">
+    {% csrf_token %}
+    <textarea name="text"></textarea>
+    <button type="submit">Отправить</button>
+</form>
+{% else %}
+<p>Войдите, чтобы оставить комментарий</p>
+{% endif %}
