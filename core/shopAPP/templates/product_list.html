@@ -1,0 +1,27 @@
+<!-- <h1>Список товаров</h1>
+
+{% for product in page_obj %}
+    <div>
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.description|truncatewords:15 }}</p>
+        <p>Цена: {{ product.price }} тг</p>
+        <a href="{% url 'add_to_cart' product.id %}">Добавить в корзину</a>
+    </div>
+    <hr>
+{% endfor %}
+
+<div>
+    {% if page_obj.has_previous %}
+        <a href="?page=1">Первая</a>
+        <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+    {% endif %}
+
+    <span>Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Вперёд</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">Последняя</a>
+    {% endif %}
+</div>
+
+<p><a href="{% url 'cart_detail' %}">Перейти в корзину</a></p> -->
