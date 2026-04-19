@@ -28,14 +28,18 @@ class Cart:
     def __iter__(self):
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
+        product_map = {str(p.id): p for p in products}
 
-        for product in products:
-            self.cart[str(product.id)]['product'] = product
-
-        for item in self.cart.values():
-            item['price'] = Decimal(item['price'])
-            item['total_price'] = item['price'] * item['quantity']
-            yield item
+        for product_id, item in self.cart.items():
+            product = product_map.get(product_id)
+            if product is None:
+                continue
+            yield {
+                'product': product,
+                'quantity': item['quantity'],
+                'price': Decimal(item['price']),
+                'total_price': Decimal(item['price']) * item['quantity'],
+            }
 
     def get_total_price(self):
         return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
